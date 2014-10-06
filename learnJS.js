@@ -84,7 +84,7 @@ describe("the JavaScript language", function(){
             return 'some example';
         }
 
-        example().should.equal();
+        example().should.equal('some example');
     });
 
     it("can declare anonymous functions", function(){
@@ -93,7 +93,7 @@ describe("the JavaScript language", function(){
         };
 
         expect(typeof(someVar)).toBe('function');
-        expect(someVar(1,1)).toBe();
+        expect(someVar(1,1)).toBe(2);
     });
 
     it("doesn't care about the declaration order when they are named", function(){
@@ -101,7 +101,7 @@ describe("the JavaScript language", function(){
             return exampleB(1);
         };
         
-        expect(exampleA()).toEqual();
+        expect(exampleA()).toEqual(1);
         
         function exampleB(arg1){
             return arg1;
@@ -115,7 +115,7 @@ describe("the JavaScript language", function(){
         var exampleB = function(arg1){
             return arg1;
         };
-        expect(exampleA()).toEqual();
+        expect(exampleA()).toEqual(1);
         
     });
 
@@ -126,8 +126,8 @@ describe("the JavaScript language", function(){
             return a + b;
         };
 
-        expect(example(1,1,1)).toBe();
-        expect(example(1,1)).toBe();
+        expect(example(1,1,1)).toBe(3);
+        expect(example(1,1)).toBe(2);
     });
 
     it("can create closures with free variables", function(){
@@ -140,7 +140,7 @@ describe("the JavaScript language", function(){
           return internal();
         }
 
-        expect(external()).toBe();
+        expect(external()).toBe(2);
     });
 
     it("can create closures with several free variables", function(){
@@ -154,7 +154,7 @@ describe("the JavaScript language", function(){
           return a + b + internal();
         }
 
-        expect(external()).toBe();
+        expect(external()).toBe(6);
     });
 
     it("defines a pure function when there are no free variables", function(){
@@ -168,7 +168,7 @@ describe("the JavaScript language", function(){
           return internal(4,4);
         }
 
-        expect(external()).toBe();
+        expect(external()).toBe(9);
     });
 
     it("can use immediately-invoked functions to take advantage of scopes", function(){
@@ -190,7 +190,7 @@ describe("the JavaScript language", function(){
         myNamespace.addOne();
         myNamespace.addOne();
 
-        expect(myNamespace.giveMeTheCount()).toBe();
+        expect(myNamespace.giveMeTheCount()).toBe(2);
     });
 
     it("can return other functions as a function result", function(){
@@ -202,7 +202,7 @@ describe("the JavaScript language", function(){
 
         var f = plus(5);
         
-        expect(f(3)).toBe();
+        expect(f(3)).toBe(8);
     });
 
     it("can have functions that receive other functions as arguments", function(){
@@ -214,7 +214,7 @@ describe("the JavaScript language", function(){
 
         var f = plus(function(){return 1});
 
-        expect(f(2)).toBe();
+        expect(f(2)).toBe(3);
     });
 
     it("can invoke functions indirectly using the special 'call'", function(){
@@ -222,7 +222,7 @@ describe("the JavaScript language", function(){
             return a + b;
         }
 
-        f.call(f,1,1).should.equal();
+        f.call(f,1,1).should.equal(2);
     });
 
     it("can invoke functions indirectly using the special 'apply'", function(){
@@ -230,7 +230,7 @@ describe("the JavaScript language", function(){
             return a + b;
         }
 
-        f.apply(f, [1,1]).should.equal();
+        f.apply(f, [1,1]).should.equal(2);
     });
 
     it("doesnt have a private scope inside blocks", function(){
@@ -239,8 +239,8 @@ describe("the JavaScript language", function(){
           j += i;
         };
 
-        expect(i).toEqual();
-        expect(j).toEqual();
+        expect(i).toEqual(5);
+        expect(j).toEqual(10);
     });
 
     it("hoists variables the way you probably dont expect", function(){
@@ -254,8 +254,8 @@ describe("the JavaScript language", function(){
           return functions;
         }
         //[0,1,2,3,4,5]
-        expect(generate()[0]()).toEqual();
-        expect(generate()[1]()).toEqual();
+        expect(generate()[0]()).toEqual(5);
+        expect(generate()[1]()).toEqual(5);
     });
 
     it("hoists variables the way you probably dont expect", function(){
@@ -271,9 +271,9 @@ describe("the JavaScript language", function(){
           return functions;
         }
         //[0,1,2,3,4,5]
-        expect(generate()[0]()).toEqual();
-        expect(generate()[1]()).toEqual();
-        expect(generate()[4]()).toEqual();
+        expect(generate()[0]()).toEqual(0);
+        expect(generate()[1]()).toEqual(1);
+        expect(generate()[4]()).toEqual(4);
     });
 
 
@@ -285,7 +285,7 @@ describe("the JavaScript language", function(){
     it("can define object literals", function(){
         var obj = {name: 'bob', theName: function(){return this.name;}};
 
-        expect(obj.theName()).toBe();
+        expect(obj.theName()).toBe("bob");
     });
 
     it("can define constructors", function(){
@@ -298,7 +298,7 @@ describe("the JavaScript language", function(){
         }
 
         var obj = new Obj();
-        expect(obj.theName()).toBe();
+        expect(obj.theName()).toBe("bob");
     });
 
     it("may contain 'static' methods", function(){
@@ -313,7 +313,7 @@ describe("the JavaScript language", function(){
           return 22;
         };
 
-        expect(Obj.someStaticMethod()).toBe();
+        expect(Obj.someStaticMethod()).toBe(22);
     });
 
     it("can have have methods in the prototype", function(){
@@ -325,8 +325,8 @@ describe("the JavaScript language", function(){
         };
 
         var obj = new Obj();
-        expect(obj.theName()).toEqual();
-        expect(obj.theName).toBe(new Obj());
+        expect(obj.theName()).toEqual(undefined);
+        expect(obj.theName).toBe(new Obj().theName);
     });
 
     it("can define a factory", function(){
@@ -342,8 +342,8 @@ describe("the JavaScript language", function(){
         }
 
         var instance = obj();
-        expect(instance.theName()).toBe();
-        expect(instance.theName).not.toBe(obj());
+        expect(instance.theName()).toBe('bob');
+        expect(instance.theName).not.toBe(obj().theName());
     });
 
     it("can create methods dynamically on an object instance", function(){
@@ -352,7 +352,7 @@ describe("the JavaScript language", function(){
         for (var i = 0; i < methodNames.length; i++){
           obj[[methodNames[i]]] = function(){ return 'it works';};
         };
-        expect(obj.meow()).toEqual();
+        expect(obj.meow()).toEqual('it works');
     });
 
     describe("the polymorphism", function(){
@@ -371,8 +371,8 @@ describe("the JavaScript language", function(){
             Child.prototype = new Parent(); // prototype chaining
 
             var child = new Child();
-            expect(child.someMethod()).toEqual();
-            expect(child.name).toEqual();
+            expect(child.someMethod()).toEqual(10);
+            expect(child.name).toEqual('child');
         });
 
         it("may use the functional inheritance", function(){
@@ -392,7 +392,7 @@ describe("the JavaScript language", function(){
             }
 
             var instance = child();
-            expect(instance.someMethod()).toBe();
+            expect(instance.someMethod()).toBe(10);
         });
         // KOAN: how do you create "protected methods?"
     });
