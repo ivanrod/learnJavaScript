@@ -1,0 +1,6 @@
+"" => [""]
+"desarrollador" => ["DESARROLLADOR"]
+"informatico" => ["INFORMATICO"]
+"desarrolladores" => ["DESARROLLADORE"]
+"INFORMÁTICO" => ["INFORMATICO"]
+"LOS INFORMÁTICOS" => ["INFORMATICO"]
