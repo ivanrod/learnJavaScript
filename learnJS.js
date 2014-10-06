@@ -444,7 +444,7 @@ function Lion(energy){
         cat.feed();
         cat.feed();
 
-        expect(cat.kilos).toEqual();
+        expect(cat.kilos).toEqual(3);
     });
 
     it("works different on dettached functions", function(){
@@ -453,8 +453,8 @@ function Lion(energy){
 
         feed();
 
-        expect(window.kilos).toEqual();
-        expect(cat.kilos).toEqual();
+        expect(window.kilos).toEqual(11);
+        expect(cat.kilos).toEqual(1);
     });
 
     it("can be bound explicitly with CALL and APPLY", function(){
@@ -462,7 +462,7 @@ function Lion(energy){
 
         feed.apply(cat);
 
-        expect(cat.kilos).toEqual();
+        expect(cat.kilos).toEqual(2);
     });
 
     it("can be bound in modern browsers with BIND", function(){
@@ -471,7 +471,7 @@ function Lion(energy){
 
         bound();
 
-        expect(cat.kilos).toEqual();
+        expect(cat.kilos).toEqual(2);
     });
 
     it("works different when function is attached to other object", function(){
@@ -480,8 +480,8 @@ function Lion(energy){
         otherCat.feed = cat.feed;
 
         otherCat.feed();
-        expect(otherCat.kilos).toEqual();
-        expect(cat.kilos).toEqual();
+        expect(otherCat.kilos).toEqual(11);
+        expect(cat.kilos).toEqual(1);
     });
 
     it("can be handled using the SELF trick", function(){
@@ -490,7 +490,7 @@ function Lion(energy){
 
         lion.hunt();
 
-        expect(lion.energy).toEqual();
+        expect(lion.energy).toEqual(185);
     });
 
     it("interprest the THIS when the function is executed", function(){
@@ -502,7 +502,7 @@ function Lion(energy){
         };
         lion.hunt();
 
-        expect(lion.energy).toEqual();
+        expect(lion.energy).toEqual(4000);
     });
   });
   describe("event driven development", function(){
@@ -517,7 +517,7 @@ function Lion(energy){
 
         lion.hunt();
 
-        expect(called).toBe(false);
+        expect(called).toBe(true);
     });
 
     it("implements the observer pattern (one2many)", function(){
@@ -546,8 +546,8 @@ function Lion(energy){
 
         publisher.informAllObservers();
 
-        expect().toBeTruthy();    
-        expect().toBeTruthy();
+        expect(observer1).toBeTruthy();    
+        expect(observer2).toBeTruthy();
     });
 
     it("implements the pub/sub pattern (many2many)", function(){
